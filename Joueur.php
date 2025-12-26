@@ -3,11 +3,10 @@ include "Database.php";
 include "Participant.php";
 class Joueur extends Participant
 {
-    
-    public string $Role;
-    public float $Salaire;
-    public int $EquipeID;
-function __construct($Nom,$Role,$Salaire,$EquipeID)
+    public ?string $Role;
+    public ?float $Salaire;
+    public ?int $EquipeID;
+function __construct($Nom= null,$Role= null,$Salaire= null,$EquipeID= null)
 {
     
     $this->Nom = $Nom;
@@ -52,6 +51,40 @@ function __construct($Nom,$Role,$Salaire,$EquipeID)
     $sql="INSERT INTO Joueur(Pseudo,Role,Salaire,EquipeID) values('$this->Nom','$this->Role',$this->Salaire,$this->EquipeID)";
     $connection->query($sql);
     }
+    public function affichage($connection){
+        $sql = "SELECT equipe.id, equipe.Nom,equipe.Jeu,joueur.Pseudo,joueur.Role,joueur.Salaire,joueur.EquipeID FROM equipe
+        JOIN joueur 
+        ON equipe.id = joueur.EquipeID";
+        $result = mysqli_query($connection,$sql);
+        if ($result) {
+            
+            while ($row = mysqli_fetch_assoc($result)) {
+                echo $row['id'];
+                echo "      ";
+                echo $row['Nom'];
+                echo "      ";
+                echo $row['Jeu'];
+                echo "\n";
+                echo "\n";
+                echo $row['Pseudo'];
+                echo "      ";
+                echo $row['Role'];
+                echo "      ";
+                echo $row['Salaire'];
+                echo "\n";
+                echo "\n";
+                echo "-----------------------------------";
+                
+                
+                
+                
+            }
+            
+        }
+        else {
+                'il n ja pas de connection';
+            }
+    }
 
 }
 
@@ -70,24 +103,18 @@ while(true){
     
     switch($choix2){
         case '1':  
-            echo "saisir name de Joueur";
-            $Nom = $input->input(": ");
-            
-            echo "saisir le role de Joueur";
-            $Role = $input->input(": ");
-
-            echo "saisir le salaire de Joueur";
-            $Salaire = $input->input(": ");
-            echo "enter id de l'equipe";
-            $EquipeID= $input->input("  ");
+            $Nom = $input->input("saisir name de Joueur: ");           
+            $Role = $input->input("saisir le role de Joueur: ");
+            $Salaire = $input->input("saisir le salaire de Joueur ");
+            $EquipeID= $input->input(" enter id de l'equipe ");
             $NewJoueur = new Joueur($Nom,$Role,$Salaire,$EquipeID);
             $NewJoueur->create($connection);
 
             break;
-    //     case '2':  
-    //         $NewJoueur=new Joueur();
-    //         $NewJoueur->affichage($conn);
-    //         break;
+        case '2':  
+            $NewJoueur=new Joueur();
+            $NewJoueur->affichage($connection);
+            break;
     // case '4':  
     //         echo "saisir id de Joueur" ;
     //         $id = $input->input(": ");
