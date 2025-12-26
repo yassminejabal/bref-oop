@@ -2,8 +2,8 @@
 echo "hhhh";
 abstract class Participant
 {
-    // public int $id;
-    public ?string $Nom;
+    public int $id;
+    public string $Nom;
 
 }
 

@@ -3,18 +3,15 @@ include "Database.php";
 include "Participant.php";
 
 class Equipe extends Participant {
-    public int $id;
-    public string $Jeu;
-    public string $Nom;
-    private $connection;
-    public int $ClubID;
 
+    public ?string $Jeu;
+    public $connection;
+    public ?int $ClubID;
 
-    public function __construct($id =null, $connection,$Jeu=null,$Nom=null,$ClubID=null){
-        $this->id = $id ;
+    public function __construct($connection,$Jeu=null,$Nom=null,$ClubID=null){
         $this->connection = $connection;
         $this->Jeu = $Jeu;
-        $this->Nom = $Nom;
+        // $this->Nom = $Nom;
         $this->ClubID = $ClubID;
     }
 
@@ -43,31 +40,25 @@ class Equipe extends Participant {
     //     return $this->ClubID;
     // }
 
-
-
-
-
-
-
-
     public function ajouteEquipe(){
-        $sql = "INSERT INTO equipe (Nom,Jeu,ClubID) VALUES ($this->Nom,$this->Jeu,$this->ClubID)";
+        $sql = "INSERT INTO equipe (Nom,Jeu,ClubID) VALUES ('$this->Nom','$this->Jeu',$this->ClubID)";
         $this->connection->query($sql);
         echo "bien";
     }
 
-    public function afficherEquipes(){
-        $sql = "SELECT * FROM equipe";
-        $result = $this->connection->query($sql);
-        if ($result) {
-            while ($row = $result->fetch_assoc()) {
-                echo $row['id'];
-                echo $row['Nom'];
-                echo $row['Jeu'];
-                echo "====================\n";
-            }
+public function afficherEquipes(){
+    $sql = "SELECT * FROM equipe";
+    $result = $this->connection->query($sql);
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            echo $row['id'];
+            echo $row['Nom'];
+            echo $row['Jeu'] ."\n";
+            echo "====================\n";
         }
     }
+}
+
 
     public function EditEquipe($id){
         $sql = "UPDATE equipe SET Nom='$this->Nom', Jeu='$this->Jeu' WHERE id=$id";
@@ -82,12 +73,7 @@ class Equipe extends Participant {
             echo "ok tu y'a suprimee cette equipe";
         }
         }
-        
     }
-
-
-
-    
 
 while(true){
       echo "\n";
@@ -99,7 +85,6 @@ while(true){
     echo "0. Exit \n";
     $input = new input();
     $choixx = $input->input("Entre votre Choix :");
-
 switch ($choixx) {
     case '1':
         echo "enter le nom du l'equipe";
@@ -111,9 +96,8 @@ switch ($choixx) {
         $newequipe->ajouteEquipe();
         break;
     case '2':
-        $newequipe = new Equipe($connection,$Jeu,$Nom,$ClubID);
+        $newequipe = new Equipe($connection);
         $newequipe->afficherEquipes();
-
         break;
     case '3':
         echo "sisir id";
@@ -127,12 +111,11 @@ switch ($choixx) {
         $ClubID = $input->input("  ");
         $equipe = new Equipe($connection, $Nom, $Jeu,$ClubID);
         $equipe->EditEquipe($id);
-
         break;
         case '4':
             echo 'id pour suprimer une equipe';
            $id = $input->input(" ");
-           $equip = new Equipe($id,$this->connection);
+           $equip = new Equipe($id,$connection);
             $equip->deleteEquipe($id);
     default:
 

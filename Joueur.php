@@ -74,6 +74,8 @@ function __construct($Nom= null,$Role= null,$Salaire= null,$EquipeID= null)
                 echo "\n";
                 echo "\n";
                 echo "-----------------------------------";
+                echo "\n";
+                echo "\n";
                 
                 
                 
