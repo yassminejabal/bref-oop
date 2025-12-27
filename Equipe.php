@@ -8,10 +8,10 @@ class Equipe extends Participant {
     public $connection;
     public ?int $ClubID;
 
-    public function __construct($connection,$Jeu=null,$Nom=null,$ClubID=null){
+    public function __construct($connection,$Jeu=null,$Nom="",$ClubID=null){
         $this->connection = $connection;
         $this->Jeu = $Jeu;
-        // $this->Nom = $Nom;
+        $this->Nom = $Nom;
         $this->ClubID = $ClubID;
     }
 
@@ -51,9 +51,18 @@ public function afficherEquipes(){
     $result = $this->connection->query($sql);
     if ($result) {
         while ($row = $result->fetch_assoc()) {
+            echo "id de l'equipe :";
+            echo "  ";
             echo $row['id'];
+            echo "\n";
+            echo "Nom de l'equipe :";
+            echo "  ";
             echo $row['Nom'];
+            echo "\n";
+            echo "Nom de Jeu :";
+            echo "  ";
             echo $row['Jeu'] ."\n";
+            echo "\n";
             echo "====================\n";
         }
     }
@@ -105,7 +114,7 @@ switch ($choixx) {
         echo "sisir le Nom d'equipe";
         $Nom = $input->input("  ");
         echo "sisir le Nom du jeu";
-        $Jeu = $input->input("  ");
+        // $Jeu = $input->input("  ");
         echo "entrer id de l'equipe";
         $Jeu = $input->input("  ");
         $ClubID = $input->input("  ");
@@ -115,7 +124,7 @@ switch ($choixx) {
         case '4':
             echo 'id pour suprimer une equipe';
            $id = $input->input(" ");
-           $equip = new Equipe($id,$connection);
+           $equip = new Equipe($connection);
             $equip->deleteEquipe($id);
     default:
 
